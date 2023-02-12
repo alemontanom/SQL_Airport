@@ -1,0 +1,386 @@
+﻿*/CREACION DE TABLAS
+
+
+create table pasajero
+    (IdPas smallint PRIMARY KEY,
+     NomPas varchar(64),
+     DireccionPas varchar(64));
+    
+create table aeropuerto
+    (IdAero smallint PRIMARY KEY,
+     NomAero varchar(64),
+     DirAero varchar(64),
+     Ciudad varchar(32),
+     Pais varchar(32),
+     TelAero varchar(16)
+    );
+
+
+
+
+create table aerolinea
+    (RFCAL varchar(16) PRIMARY KEY,
+     NomAerolinea varchar(64),
+     SedeCen varchar(32),
+     TelAl varchar(16)
+    );
+
+
+
+
+create table empleado
+    (RFC varchar(16) PRIMARY KEY,
+     NomEmp varchar(64),
+     Area varchar(32),
+     Antiguedad SMALLINT,
+     RFCAL varchar(16) references Aerolinea
+    );
+    
+create table modelos
+    (IdModelo varchar(16) PRIMARY KEY,
+     Capacidad int,
+     DisMax int,
+     VelProm real
+    );
+    
+create table avion
+    (NoSerie varchar(16) PRIMARY KEY,
+     IdModelo varchar(16) references Modelos,
+     RFCAL varchar(16) REFERENCES Aerolinea
+    );
+    
+create table vuelo
+    (NoVuelo varchar(5) PRIMARY KEY,
+     Puerta SMALLINT,
+     Fecha date,
+     IdAero smallint references Aeropuerto,
+     RFCAL varchar(16) REFERENCES Aerolinea,
+     NoSerie varchar(16) REFERENCES Avion,
+     Horario time,
+     Pista smallint
+    );
+    
+create table voladores
+    (IdPass smallint references pasajero,
+     NoVuelo varchar(5) REFERENCES vuelo
+    );
+    
+create table empleadosVuelo
+    (RFC varchar(16) REFERENCES empleado,
+     NoVuelo varchar(5) REFERENCES vuelo
+    );
+
+
+*/TUPLAS
+
+
+insert into aerolinea
+  values ('aemex2w3', 'Aeromexico','CDMX','55-33-22-33-44'),
+   ('intj2d3', 'Interjet','Monterrey','55-53-22-73-34'),
+   ('amer5g6', 'American Airlines','Nueva York','702-323-3345'),
+   ('ibe3h4', 'Iberia','Madrid','33-23-54-64-22'),
+   ('airca6j7', 'Air Canada','Toronto','604-456-7523'),
+   ('cont4k3', 'Continental','Washington','415-232-4424');
+ 
+ 
+ insert into aeropuerto
+  values (1, 'Aeropuerto Internacional de la Ciudad de Mexico','Bv. Aeroportuario','CDMX','Mexico', '55-53-22-53-44'),
+   (2, 'Los Angeles Intl. Airport','Airport Way','Los Aangles','Estados Unidos', '603-334-2342'),
+   (3, 'Paris Orly','Champs Elisee','Paris','Francia' ,'21-2343-2343'),
+   (4, 'Heringsdorf Airport','Vorpommern 23','Heringsdorf','Alemania', '71-232-434-334'),
+   (5, 'Malta International Airport','Luqa','Gudja','malta', '34-234-4543'),
+   (6, 'Heathrow Airport','Hillingdon','Londres','Reino Unido', '55-53-22-53-44');
+ 
+ 
+    
+insert into modelos
+         values('BO737', '160', '1200','521'),
+        ('EM190', '99', '1000','515'),
+        ('BO737-M', '166', '1280','523'),
+        ('BO787-D', '274', '1500','566'),
+        ('BO787', '243', '1350','559');
+    
+insert into avion
+         values('3242CXXH', 'BO737', 'aemex2w3'),
+        ('AKX100420', 'EM190', 'intj2d3'),
+        ('3542CXXM', 'BO737-M', 'aemex2w3'),
+        ('234BOMD', 'BO787-D', 'intj2d3'),
+        ('AKX100354', 'EM190', 'airca6j7'),
+        ('4442CXXM', 'BO737-M', 'ibe3h4'),
+        ('4642CXXM', 'BO737-M', 'amer5g6'),
+        ('AKX123220', 'EM190', 'cont4k3'),
+        ('277BOMA', 'BO787', 'airca6j7');
+    
+insert into empleado
+        values ('judp023', 'Juan Perez', 'Pista', '21','aemex2w3'),
+        ('felp345', 'Felipe Lopez', 'Control', '18', 'cont4k3'),
+        ('adto243', 'Adriana Torres', 'Piloto', '11', 'aemex2w3'),
+        ('jonew533', 'John Newman', 'Mostrador', '4', 'airca6j7'),
+        ('fedo643', 'Fernanda Dominguez', 'Maletas', '7', 'amer5g6');
+    
+insert into vuelo
+        values ('AM234', '4', '10/8/22', 2, 'aemex2w3', '3242CXXH', '11:30', '2'),
+        ('AM321', '12', '10/10/22', 1, 'aemex2w3', '3542CXXM', '1:34', '1'),
+        ('AM443', '33', '10/13/22', 3, 'aemex2w3', '3242CXXH', '21:30', '2'),
+        ('AC932', '15', '10/7/22', 4, 'airca6j7', 'AKX100354', '15:45', '4'),
+        ('AC734', '17', '10/10/22', 5, 'airca6j7', 'AKX100354', '2:30', '4'),
+        ('AA123', '22', '10/12/22', 1, 'amer5g6', '4642CXXM', '5:43', '1'),
+        ('AA234', '28', '10/15/22', 2, 'amer5g6', '4642CXXM', '9:32', '1'),
+        ('CO544', '2', '10/12/22', 6, 'cont4k3', 'AKX123220', '14:20', '2');    
+    
+insert into empleadosvuelo
+        values ('adto243', 'AM234'),
+        ('adto243', 'AM321'),
+        ('adto243', 'AM443'),
+        ('jonew533', 'AC932'),
+        ('jonew533', 'AC734'),
+        ('fedo643', 'AA123'),
+        ('fedo643', 'AA234'),
+        ('felp345', 'CO544');
+    
+insert into pasajero
+        values (1, 'Juan Urquiza', 'Los Alpes 234, Madrid'),
+        (2, 'Santiago Casanova', 'Calzada de las Aguilas 2136, Los Angeles'),
+        (3, 'Alejandra Montaño', 'Yucatan 3, Malta'),
+        (4, 'Raul Lopez', 'Amsterdam 43, Londres'),
+            (5, 'Claudia Fernandez', 'Aristoteles 34, Paris'),
+            (6, 'Andres Vega', 'Tamaulipas 94, Los Angeles'),
+            (7, 'Antonio Marquez', 'Chihuahua 332, Malta'),
+            (8, 'Renata Camarena', 'Ricardo Camarena 43, Malta'),
+        (9, 'Jaime Gonzalez', 'Winston Churchill 567, Londres');
+    
+insert into voladores
+        values
+        (1,'AM443'),
+        (2,'AM234'),
+(3,'AC932'),
+        (5,'AM443'),
+        (6,'AA234'),
+        (7,'AC734'),
+        (4,'AC932'),
+        (8,'AC932'),
+        (9,'CO544');
+
+
+
+
+*/CONSULTAS
+
+
+/* a) Queremos obtener el modelo del avion, la aerolina a la que pertenece y
+la velocidad promedio de los aviones en la base */
+
+
+
+
+select m.idmodelo, nomaerolinea, velprom
+from modelos m, aerolinea a, avion av
+where m.idmodelo = av.idmodelo and av.rfcal = a.rfcal
+order by velprom desc;
+
+
+/* b) Queremos obtener la fecha, puerta y pista de los vuelos del 13 de octubre del 2022 en adelante y el nombre de la aerolinea que los opera */
+
+
+select fecha, puerta, pista, nomaerolinea
+from vuelo v, aerolinea a
+where v.rfcal = a.rfcal and
+    fecha >= '2022-10-13';
+
+
+/* c) Queremos obtener el nombre del pasajero, su direccion y la fecha en la que vuela para aquellos que
+NO vuelan en un avion de tipo 4642CXXM*/
+
+
+select nompas, direccionpas, fecha
+from pasajero p, vuelo v, voladores vol
+where vol.idpass = p.idpas and v.novuelo = vol.novuelo and
+    idpas not in(
+                    select idpas
+                    from pasajero p, vuelo v, voladores vol, avion avi
+                    where vol.idpass = p.idpas and v.novuelo = vol.novuelo and avi.noserie = v.noserie
+                    and v.noserie = '4642CXXM'
+    );
+    
+/* d) Queremos obtener el nombre de los empleados que son pilotos y se dirigen a CDMX */
+    
+select nomemp
+from empleado e, empleadosvuelo ev, vuelo v, aeropuerto a
+where e.rfc = ev.rfc and ev.novuelo = v.novuelo and v.idaero = a.idaero
+    and a.ciudad = 'CDMX'
+intersect
+select nomemp
+from empleado e, empleadosvuelo ev, vuelo v, aeropuerto a
+where e.rfc = ev.rfc and ev.novuelo = v.novuelo and v.idaero = a.idaero
+    and e.area = 'Piloto'
+    
+/* e) Queremos obtener el nombre de los empleados que van a CDMX o son del area de control */
+    
+select nomemp
+from empleado e, empleadosvuelo ev, vuelo v, aeropuerto a
+where e.rfc = ev.rfc and ev.novuelo = v.novuelo and v.idaero = a.idaero
+        and a.ciudad = 'CDMX'
+union
+select nomemp
+from empleado e, empleadosvuelo ev, vuelo v, aeropuerto a
+where e.rfc = ev.rfc and ev.novuelo = v.novuelo and v.idaero = a.idaero
+        and e.area = 'Control';
+
+
+/* f) Queremos el numero de vuelos que van a cada aeropuerto */
+
+
+select nomaero, count(*)
+from aeropuerto a, vuelo v
+where a.idaero = v.idaero
+group by a.idaero
+
+
+/* g) Queremos el nombre de la aerolinea y la velocidad promedio de su flota de aviones SI
+la velocidad promedio rebasa las 530 millas por hora */
+
+
+select  nomaerolinea, avg(velprom) VelPromTot
+from avion a, modelos m ,aerolinea ae
+where a.rfcal = ae.rfcal and m.idmodelo = a.idmodelo
+group by nomaerolinea
+having avg(velprom) >= 530
+
+
+/* h) Queremos el nombre de la aerolinea y el modelo de avion que salen de una pista
+con número superior a 2 SI tal combinacion de aerolinea/avion tiene más de una ocurrencia*/
+
+
+select  nomaerolinea, a.idmodelo
+from vuelo v, avion a, aerolinea ae, modelos m
+where v.noserie = a.noserie and a.rfcal = ae.rfcal and m.idmodelo = a.idmodelo
+    and pista >2
+group by nomaerolinea, a.idmodelo
+having count(*)>1;
+
+
+/* i) Queremos obtener la distancia maxima de la flota de cada aerolinea */
+
+
+
+
+select nomaerolinea, max(dismax)
+from modelos m, avion a, aerolinea ae
+where m.idmodelo = a.idmodelo and a.rfcal = ae.rfcal
+GROUP by nomaerolinea
+
+
+
+
+
+
+*/PARTE 2
+
+
+insert into vuelo
+        values ('AM534', '4', '10/8/22', 1, 'aemex2w3', '3242CXXH', '11:30', '1'),
+        ('AM351', '12', '10/10/22', 2, 'aemex2w3', '3542CXXM', '1:34', '2'),
+        ('AM453', '33', '10/13/22', 4, 'aemex2w3', '3242CXXH', '21:30', '4'),
+        ('AC952', '15', '10/7/22', 3, 'airca6j7', 'AKX100354', '15:45', '3');
+
+
+
+
+insert into voladores
+        values
+        (1,'AM534'),
+        (2,'AM351'),
+        (3,'AM453'),
+        (5,'AC952'),
+        (6,'AM351'),
+        (7,'AM351'),
+        (4,'AC952'),
+        (8,'AC952'),
+        (9,'AM534');
+
+
+
+
+
+
+select v.novuelo, fecha, horario, idpass
+from vuelo v, voladores vo
+where vo.novuelo = v.novuelo
+and fecha >= '2022-10-08' and fecha <= '2022-10-12'
+
+
+select m.idmodelo, nomaerolinea, dismax, velprom, capacidad
+from modelos m, avion a, aerolinea ae
+where m.idmodelo = a.idmodelo and a.rfcal = ae.rfcal
+
+
+
+
+insert into empleado
+        values ('alemon23', 'Alejandra Montano', 'Control', '21','aemex2w3'),
+        ('sancas23', 'Santiago Casanova', 'Maletas', '18', 'cont4k3'),
+        ('marmon332', 'maria Mondragon', 'Piloto', '11', 'aemex2w3'),
+        ('justre209', 'Justin Trudeau', 'Mostrador', '4', 'airca6j7'),
+        ('silgua345', 'Silvia Guardati', 'Maletas', '7', 'amer5g6');
+
+
+insert into empleadosvuelo
+        values ('alemon23', 'AM234'),
+        ('sancas23', 'AM534'),
+        ('marmon332', 'AM443'),
+        ('justre209', 'AM351'),
+        ('silgua345', 'AC734'),
+        ('sancas23', 'AM453'),
+        ('alemon23', 'AA234'),
+        ('alemon23', 'AC952');
+
+
+ insert into aeropuerto
+  values (7, 'Aeropuerto Internacional de Guadalajara','Bv. Aeropuerto','Guadalajara','Mexico', '53-53-22-53-44'),
+   (8, 'JFK','Airport Street','Nueva York','Estados Unidos', '609-334-2342'),
+   (9, 'Paris Charles de Gaulle','Eifel Street','Paris','Francia' ,'21-2453-2343'),
+   (10, 'Munich Airport','Volskwagen 23','Munich','Alemania', '71-232-694-334'),
+   (11, 'Malta Local Airport','Luqa','Gudja','malta', '34-134-4543'),
+   (12, 'Brighton Int. Airport','Airplane Drive','Brighton','Reino Unido', '55-53-22-23-84');
+
+
+insert into vuelo
+        values ('AM897', '3', '13/11/22', 7, 'aemex2w3', '3242CXXH', '11:30', '2'),
+        ('AM348', '1', '6/11/22', 8, 'aemex2w3', '3542CXXM', '1:34', '1'),
+        ('AM445', '33', '6/11/22', 8, 'aemex2w3', '3242CXXH', '21:30', '2'),
+        ('AC953', '15', '6/11/22', 7, 'airca6j7', 'AKX100354', '15:45', '4'),
+        ('AC563', '17', '8/11/22', 10, 'airca6j7', 'AKX100354', '2:30', '4'),
+        ('AA162', '22', '8/11/22', 9, 'amer5g6', '4642CXXM', '5:43', '1'),
+        ('AA253', '28', '10/11/22', 11, 'amer5g6', '4642CXXM', '9:32', '1'),
+        ('CO564', '2', '10/11/22', 12, 'cont4k3', 'AKX123220', '14:20', '2');
+
+
+
+
+select novuelo, fecha, pais, ciudad, nomaero from
+vuelo v, aeropuerto a
+where v.idaero = a.idaero
+
+
+insert into voladores
+        values
+        (1,'AM897'),
+        (2,'AM348'),
+        (3,'AM445'),
+        (5,'AC953'),
+        (6,'AC563'),
+        (7,'AA162'),
+        (4,'AA253'),
+        (8,'CO564'),
+        (9,'CO564');
+insert into voladores
+        values
+        (9,'AM897'),
+        (8,'AM348'),
+        (7,'AM445'),
+        (6,'AC953'),
+        (5,'AC563'),
+        (4,'AA162'),
+        (3,'AA253'),
+        (2,'CO564'),
+        (1,'CO564');
